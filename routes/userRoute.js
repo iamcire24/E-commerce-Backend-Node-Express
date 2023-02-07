@@ -14,4 +14,14 @@ router.post("/login", (req, res) => {
     userController.login(req.body).then(resultFromController => res.send(resultFromController));
 })
 
+router.patch("/:userId/admin", auth.verify, (req, res)=> {
+    const userData = auth.decode(req.headers.authorization);
+    if (userData.isAdmin){
+        userController.changeUserVerification(req.params).then(resultFromController => res.send(resultFromController))
+    }
+    else {
+        res.status(401).send("Only Admin can change user status!")
+    }
+    
+})
 module.exports = router;

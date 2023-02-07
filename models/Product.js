@@ -3,7 +3,8 @@ const moongoose = require("mongoose");
 const productSchema = moongoose.Schema({
     name: {
         type: String,
-        required: [true, "Product Name is required!"]
+        required: [true, "Product Name is required!"],
+        unique: true
     },
     image: {
         type: Buffer

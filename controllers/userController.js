@@ -3,8 +3,17 @@ const bcrypt = require("bcrypt");
 const auth = require("../auth");
 
 
-module.exports.signUp = (reqBody) => {
+module.exports.signUp = async (reqBody) => {
 
+        const {username, email, password} = reqBody;
+        const userExist = await User.findOne({email});
+        if (!username || !email || !password){
+            return ("Please put username, email and password!")
+        }
+        
+        if (userExist){
+            return ("User with that email already exists!");
+        }
             let newUser = new User({
                 firstName: reqBody.firstName,
                 lastName: reqBody.lastName,
@@ -16,7 +25,7 @@ module.exports.signUp = (reqBody) => {
                 address: reqBody.address
             })
             
-            return newUser.save().then((user,error) =>{
+            return await newUser.save().then((user,error) =>{
                 if(error){
                     //return console.log("Registration Failed!")
                     return false
@@ -38,17 +47,27 @@ module.exports.login = (reqBody) => {
         } else {
             const isPasswordCorrect = bcrypt.compareSync(reqBody.password, result.password);
             if (isPasswordCorrect){
-                let token = auth.createAccessToken(result)
-                message = message = `Welcome ${result.firstName} ${result.lastName}`
-                return `${message} 
-                access token: ${token}`
+
+                return {access: auth.createAccessToken(result)}
             } else {
                 return message = "Password is incorrect!"
             }
         }
     })
-
 }
+module.exports.changeUserVerification = async (reqParams) => {
+    let updatedUser = {
+        isAdmin: true
+    }
+    return User.findByIdAndUpdate(reqParams.userId, updatedUser).then((user,error) => {
+        if (error){
+            return false
+        } else {
+            return user
+        }
+    })
+}
+
     
     
     
