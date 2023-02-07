@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const userRoute = require("./routes/userRoute")
 const port = 8080;
 
 const app = express();
@@ -21,7 +22,7 @@ db.on("error", console.log.bind(console, "Connection Error"));
 db.once("open", () => console.log("Connected in the Atlas"));
 
 
-
+app.use("/users", userRoute);
 
 app.listen(port, () => {
     console.log(`Connected at port ${port}`);

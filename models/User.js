@@ -1,4 +1,4 @@
-const mongoose = require("moongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -9,16 +9,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Last Name is required!"]
     },
+    username: {
+        type: String,
+        required: [true, "Username is required!"]
+    },
     email: {
         type: String,
         required: [true, "Email is required!"]
     },
     profileImage: {
         type: Buffer
-    },
-    email: {
-        type: String,
-        required: [true, "Email is required!"]
     },
     password: {
         type: String,
@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     mobileNo: {
-        type: Number
+        type: Number,
+        required: [true, "Mobile Number is required!"]
     },
     address: {
         type: String,
