@@ -6,12 +6,13 @@ const mongoose = require("mongoose");
 
 
 module.exports.makeOrder = async (data) => {
-    
     if (!data.isAdmin){
-        let productInfo = await Product.findById(data.productId).then(result => {
+        let productDetails = await Product.findById(data.productId).then(result => {
             return result
         })
         
+        
+
         let bill = await Product.findById(data.productId).then(result => {
             return result.price * data.quantity
         })
@@ -19,10 +20,10 @@ module.exports.makeOrder = async (data) => {
             userId: data.owner,
             orderProducts: [{
                 productId: data.productId,
-                productName: productInfo.name,
+                productName: productDetails.name,
                 quantity: data.quantity
             }],
-            totalAmount: bill
+            totalAmount: subtotal
         })
         
       
@@ -37,7 +38,7 @@ module.exports.makeOrder = async (data) => {
         let orders = {
             products: [{
                 productId: data.productId,
-                productName: productInfo.name,
+                productName: productDetails.name,
                 quantity: data.quantity
             }],
             totalAmount: bill
@@ -64,10 +65,10 @@ module.exports.makeOrder = async (data) => {
             })
         })
         
-        if (isUserUpdated && isProductUpdated){
-            return false
-        } else {
+        if (isUserUpdated){
             return true
+        } else {
+            return false
         }
         
         
@@ -77,4 +78,22 @@ module.exports.makeOrder = async (data) => {
 			return {value};
 		})
     
+    
+}
+module.exports.getAllOrders = async (data) =>{
+    if (data.isAdmin){
+        return await Order.find().then(orders => {
+            return orders
+        })
+    }
+    let message = Promise.resolve('Admin only')
+		return await message.then((value) => {
+			return {value};
+		})
+}
+
+module.exports.getMyOrders = async (data) => {
+    return await Order.find({userId: data.id}).then(result => {
+        return result
+    })
 }

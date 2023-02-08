@@ -55,19 +55,40 @@ module.exports.login = (reqBody) => {
         }
     })
 }
-module.exports.changeUserVerification = async (reqParams) => {
-    let updatedUser = {
-        isAdmin: true
-    }
-    return User.findByIdAndUpdate(reqParams.userId, updatedUser).then((user,error) => {
-        if (error){
-            return false
-        } else {
-            return user
+module.exports.changeUserVerification = async (reqParams, data) => {
+    if (data.isAdmin){
+        let updatedUser = {
+            isAdmin: true
         }
+        return User.findOneAndUpdate(reqParams.userId, updatedUser).then((user,error) => {
+            if (error){
+                return false
+            } else {
+                return true
+            }
+        })
+
+    }
+    let message = Promise.resolve("Only ADMIN can view change user status.")
+    return await message
+    
+}
+module.exports.getUserDetails = async (data) => {
+    return await User.findOne(data.id).then(user => {
+        return user
     })
+    
 }
 
+module.exports.getAllUsers = async (data) => {
+    if (data.isAdmin){
+         return await User.find().then(users => {
+            return users
+         })
+    }
+    let message = Promise.resolve("Only ADMIN can view all users.")
+    return await message
+}
     
     
     

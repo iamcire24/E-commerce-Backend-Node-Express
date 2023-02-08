@@ -15,13 +15,27 @@ router.post("/login", (req, res) => {
 })
 
 router.patch("/:userId/admin", auth.verify, (req, res)=> {
-    const userData = auth.decode(req.headers.authorization);
-    if (userData.isAdmin){
-        userController.changeUserVerification(req.params).then(resultFromController => res.send(resultFromController))
+    const data = {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin
     }
-    else {
-        res.status(401).send("Only Admin can change user status!")
-    }
+    userController.changeUserVerification(req.params, data).then(resultFromController => res.send(resultFromController))
+    
     
 })
+
+router.get("/userDetails", auth.verify, (req, res) => {
+    const data = {
+        userId: auth.decode(req.headers.authorization).id
+    }
+    userController.getUserDetails(data).then(resultFromController => res.send(resultFromController));
+})
+
+router.get("/allUsers", auth.verify, (req, res) => {
+    const data = {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }
+    userController.getAllUsers(data).then(resultFromController => res.send(resultFromController));
+})
+
+
 module.exports = router;

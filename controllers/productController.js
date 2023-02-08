@@ -57,10 +57,10 @@ module.exports.getProductByCode = async (input) => {
 }
 
 module.exports.getProductById = async (input) => {
-    if (!mongoose.Types.ObjectId.isValid(input.productId)){
-        return "Product not found"
-    }
-    return await Product.findById(input.productId).then(result=> {
+   let prodId = {
+    id: input.prodId
+   }
+    return await Product.findOne(prodId.id).then(result=> {
         return result
     })
 }

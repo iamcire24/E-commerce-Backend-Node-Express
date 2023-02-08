@@ -10,9 +10,24 @@ router.post("/addOrder", auth.verify, (req, res) => {
         owner: auth.decode(req.headers.authorization).id,
         productId: req.body.productId,
         quantity: req.body.quantity,
+        reqbody: req.body,
         isAdmin: auth.decode(req.headers.authorization).isAdmin
     }
     orderController.makeOrder(data).then(resultFromController => res.send(resultFromController));
+})
+
+router.get("/allOrders", auth.verify, (req, res) => {
+    const data = {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }
+    orderController.getAllOrders(data).then(resultFromController => res.send(resultFromController));
+})
+
+router.get("/myOrders", auth.verify, (req, res) => {
+    const data = {
+        id: auth.decode(req.headers.authorization).id
+    }
+    orderController.getMyOrders(data).then(resultFromController => res.send(resultFromController));
 })
 
 
