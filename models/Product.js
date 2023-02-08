@@ -6,9 +6,6 @@ const productSchema = moongoose.Schema({
         required: [true, "Product Name is required!"],
         unique: true
     },
-    image: {
-        type: Buffer
-    },
     code: {
         type: String,
         required: [true, "Product Code is required!"]
@@ -21,13 +18,13 @@ const productSchema = moongoose.Schema({
         type: Number,
         required: [true, "Price is required!"]
     },
-    isActive: {
-        type: Boolean,
-        default: true
-    },
     quantity: {
         type: Number,
         required: [true, "Product Quantity is required!"]
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     },
     createdOn: {
         type: Date,

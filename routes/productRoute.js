@@ -29,9 +29,11 @@ router.get("/code", (req, res) =>{
 })
 
 
+
 router.get("/:productId", (req,res) => {
     productController.getProductById(req.params).then(resultFromController => res.send(resultFromController));
 })
+
 
 router.patch("/updateProduct/:productId", auth.verify, (req, res) => {
     const data = {
@@ -40,11 +42,12 @@ router.patch("/updateProduct/:productId", auth.verify, (req, res) => {
     }
     productController.updateProductById(req.params, data).then(resultFromController => res.send(resultFromController));
 })
-router.patch("/updateProduct/?productName", auth.verify, (req, res) => {
-    const data = {
-        product: req.body,
+
+router.patch("/:productId/archive", auth.verify, (req, res) => {
+    const data =  {
         isAdmin: auth.decode(req.headers.authorization).isAdmin
     }
-    productController.updateProductByName(req.params, data).then(resultFromController => res.send(resultFromController));
-})
+	productController.archiveProduct(req.params, data).then(resultFromController => res.send(resultFromController));
+});
+
 module.exports = router;

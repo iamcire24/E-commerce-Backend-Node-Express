@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoute")
 const productRoute = require("./routes/productRoute")
+const orderRoute = require("./routes/orderRoute")
 const port = 8080;
 
 const app = express();
@@ -25,6 +26,7 @@ db.once("open", () => console.log("Connected in the Atlas"));
 
 app.use("/users", userRoute);
 app.use("/products", productRoute);
+app.use("/order", orderRoute);
 
 app.listen(port, () => {
     console.log(`Connected at port ${port}`);

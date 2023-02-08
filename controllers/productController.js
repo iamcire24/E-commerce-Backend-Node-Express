@@ -24,7 +24,7 @@ module.exports.addProduct = async (data) => {
             if(error){
                 return false
             } else {
-                return true
+                return "Product added"
             }
         })
     }
@@ -43,7 +43,7 @@ module.exports.getProductByName = async (input) => {
         return "Product not found."
     }
     return await Product.find({name: input.name}).then(result=> {
-       return result
+        return result
     })
 }
 module.exports.getProductByCode = async (input) => {
@@ -52,7 +52,7 @@ module.exports.getProductByCode = async (input) => {
         return "Product not found."
     }
     return await Product.find({code: input.code}).then(result=> {
-       return result
+        return result
     })
 }
 
@@ -74,7 +74,7 @@ module.exports.updateProductById = async (reqParams, data) => {
             price: data.product.price,
             quantity: data.product.quantity
         } 
-
+        
         return await Product.findByIdAndUpdate(reqParams.productId, updatedProduct).then((product, error)=> {
             if (error){
                 return false
@@ -82,9 +82,26 @@ module.exports.updateProductById = async (reqParams, data) => {
                 return "Succesfully Update"
             }
         })
-
+        
     }
     let message = Promise.resolve("Only ADMIN can update products.")
     return await message
 }
 
+module.exports.archiveProduct = async (reqParams, data) => {
+    if (data.isAdmin){
+        let archivedProduct = {
+            isActive: false
+        }
+        return await Product.findOneAndUpdate(reqParams.productId, archivedProduct).then((product, error) => {
+            if (error){
+                return false
+            } else {
+                return "Product is archived"
+            }
+        })
+    }  
+    let message = Promeise.resolve("Only ADMIN can archive a product!")
+    return await message 
+ 
+};

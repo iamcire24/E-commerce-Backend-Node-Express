@@ -18,9 +18,6 @@ const userSchema = new mongoose.Schema({
         required: [true, "Email is required!"],
         unique: true
     },
-    profileImage: {
-        type: Buffer
-    },
     password: {
         type: String,
         required: [true, "Password is required!"]
@@ -37,10 +34,32 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Address is required!"]
     },
-    deliveryAddress: {
-        type: String,
-        default: this.address
-    },
+    orders: [{
+        products:[{
+            productId: {
+                type: String,
+                required: [true, "ProductId is required"],
+                ref: 'Product'
+            },
+            productName: {
+                type: String,
+                required: [true, "Product Name is required"]
+            },
+            quantity: {
+                type: Number,
+                required: [true, "Quantity is required"]
+                
+            }
+        }],
+        totalAmount: {
+            type: Number,
+            default: 0
+        },
+        purchasedOn: {
+            type: Date,
+            default: new Date()
+        } 
+    }],
     dateRegistered: {
         type: Date,
         default: new Date()
