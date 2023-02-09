@@ -58,10 +58,8 @@ module.exports.getProductByCode = async (input) => {
 }
 
 module.exports.getProductById = async (input) => {
-   let prodId = {
-    id: input.prodId
-   }
-    return await Product.findOne(prodId.id).then(result=> {
+   
+    return await Product.findById(input.productId).then(result=> {
         return result
     })
 }

@@ -71,7 +71,7 @@ module.exports.changeUserVerification = async (reqParams, data) => {
         let updatedUser = {
             isAdmin: true
         }
-        return User.findOneAndUpdate(reqParams.userId, updatedUser).then((user,error) => {
+        return User.findByIdAndUpdate(reqParams.userId, updatedUser).then((user,error) => {
             if (error){
                 return false
             } else {
@@ -85,7 +85,7 @@ module.exports.changeUserVerification = async (reqParams, data) => {
     
 }
 module.exports.getUserDetails = async (data) => {
-    return await User.findOne(data.id).then(user => {
+    return await User.findById(data.userId).then(user => {
         return user
     })
     
