@@ -75,7 +75,7 @@ module.exports.changeUserVerification = async (reqParams, data) => {
             if (error){
                 return false
             } else {
-                return true
+                return "User status has been updated"
             }
         })
 
