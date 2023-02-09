@@ -6,14 +6,25 @@ const auth = require("../auth");
 module.exports.signUp = async (reqBody) => {
 
         const {username, email, password} = reqBody;
-        const userExist = await User.findOne({email});
-        if (!username || !email || !password){
-            return ("Please put username, email and password!")
+        const emailExist = await User.findOne({email});
+        const usernameExist = await User.findOne({username});
+        if (!username){
+            return ("Please put username!")
+        }
+        if (!email){
+            return ("Please put email!")
+        }
+        if (!password){
+            return ("Please put password!")
         }
         
-        if (userExist){
+        if (usernameExist){
+            return ("User with that username already exists!");
+        }
+        if (emailExist){
             return ("User with that email already exists!");
         }
+        
             let newUser = new User({
                 firstName: reqBody.firstName,
                 lastName: reqBody.lastName,
@@ -69,7 +80,7 @@ module.exports.changeUserVerification = async (reqParams, data) => {
         })
 
     }
-    let message = Promise.resolve("Only ADMIN can view change user status.")
+    let message = Promise.resolve("Only ADMIN can change user status.")
     return await message
     
 }

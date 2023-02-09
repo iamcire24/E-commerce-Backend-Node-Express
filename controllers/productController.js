@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const auth = require("../auth");
 const mongoose = require("mongoose");
+const { findOneAndUpdate } = require("../models/Order");
 
 module.exports.addProduct = async (data) => {
     const {name, code} = data.product
@@ -93,15 +94,36 @@ module.exports.archiveProduct = async (reqParams, data) => {
         let archivedProduct = {
             isActive: false
         }
-        return await Product.findOneAndUpdate(reqParams.productId, archivedProduct).then((product, error) => {
+        return await Product.findByIdAndUpdate(reqParams.productId, archivedProduct).then((product, error) => {
             if (error){
                 return false
             } else {
                 return "Product is archived"
             }
+        
         })
     }  
-    let message = Promeise.resolve("Only ADMIN can archive a product!")
+    let message = Promise.resolve("Only ADMIN can archive a product!")
     return await message 
  
 };
+module.exports.addStocks = async (reqParams, data) => {
+    if (data.isAdmin){
+        const prodQuantity = await Product.findById(reqParams.prodId).then(product => {
+            return product.quantity
+        })
+        let updatedStocks = {
+            quantity: prodQuantity + data.quantity.quantity
+        }
+        return await Product.findByIdAndUpdate(reqParams.prodId, updatedStocks).then((product, error) => {
+            if (error){
+                return false
+            } else {
+                return "Stocks has been Succesfully Updated"
+            }
+        })
+    }
+    let message = Promise.resolve("Only ADMIN can add stocks to a product!")
+    return await message 
+
+}

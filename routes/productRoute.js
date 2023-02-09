@@ -50,4 +50,12 @@ router.patch("/:productId/archive", auth.verify, (req, res) => {
 	productController.archiveProduct(req.params, data).then(resultFromController => res.send(resultFromController));
 });
 
+router.patch("/addStocks/:prodId", auth.verify, (req, res) => {
+    const data = {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin,
+        quantity: req.body
+    }
+    productController.addStocks(req.params, data).then(resultFromController => res.send(resultFromController));
+})
+
 module.exports = router;
