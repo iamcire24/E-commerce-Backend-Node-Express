@@ -42,7 +42,7 @@ module.exports.signUp = async (reqBody) => {
                     return false
                 } else {
                     //return console.log(`You have succesfully registered with the following information: ${user}`)
-                    return user
+                    return "You have successfully registered"
                 }
             })
 
