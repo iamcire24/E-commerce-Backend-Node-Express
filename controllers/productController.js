@@ -25,7 +25,7 @@ module.exports.addProduct = async (data) => {
             if(error){
                 return false
             } else {
-                return "Product added"
+                return true
             }
         })
     }
@@ -37,6 +37,23 @@ module.exports.addProduct = async (data) => {
 module.exports.getAvailableProducts = () => {
     return Product.find({isActive: true});
 }
+module.exports.getFirstProducts = () => {
+    return Product.find({isActive: true}).limit(3);
+}
+
+module.exports.getAllProducts = () => {
+    return Product.find({}).then(result => {
+        return result;
+    });
+}
+
+module.exports.getNewProducts = () => {
+    return Product.find({isActive: true}).sort({"createdOn" : -1}).limit(5).then(result => {
+        return result;
+    });
+}
+
+
 
 module.exports.getProductByName = async (input) => {
     const productExist = await Product.findOne({name: input.name});
@@ -96,7 +113,26 @@ module.exports.archiveProduct = async (reqParams, data) => {
             if (error){
                 return false
             } else {
-                return "Product is archived"
+                return true
+            }
+        
+        })
+    }  
+    let message = Promise.resolve("Only ADMIN can archive a product!")
+    return await message 
+ 
+};
+
+module.exports.unarchiveProduct = async (reqParams, data) => {
+    if (data.isAdmin){
+        let archivedProduct = {
+            isActive: true
+        }
+        return await Product.findByIdAndUpdate(reqParams.productId, archivedProduct).then((product, error) => {
+            if (error){
+                return false
+            } else {
+                return true
             }
         
         })

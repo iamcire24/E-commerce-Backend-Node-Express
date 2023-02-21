@@ -18,6 +18,17 @@ router.post("/addProduct", auth.verify, (req, res) => {
 router.get("/availableProducts", (req, res) => {
     productController.getAvailableProducts().then(resultFromController => res.send(resultFromController));
 })
+router.get("/all", (req, res) => {
+    productController.getAllProducts().then(resultFromController => res.send(resultFromController));
+})
+router.get("/all3", (req, res) => {
+    productController.getFirstProducts().then(resultFromController => res.send(resultFromController));
+})
+router.get("/allNew", (req, res) => {
+    productController.getNewProducts().then(resultFromController => res.send(resultFromController));
+})
+
+
 
 //retrieve single product by name
 router.get("/name", (req, res) =>{
@@ -48,6 +59,12 @@ router.patch("/:productId/archive", auth.verify, (req, res) => {
         isAdmin: auth.decode(req.headers.authorization).isAdmin
     }
 	productController.archiveProduct(req.params, data).then(resultFromController => res.send(resultFromController));
+});
+router.patch("/:productId/unarchive", auth.verify, (req, res) => {
+    const data =  {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }
+    productController.unarchiveProduct(req.params, data).then(resultFromController => res.send(resultFromController));
 });
 
 router.patch("/addStocks/:prodId", auth.verify, (req, res) => {

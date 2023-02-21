@@ -9,6 +9,11 @@ router.post("/signUp", (req, res) => {
     
 })
 
+router.post("/checkEmail", (req, res) => {
+
+    userController.checkEmailExists(req.body).then(resultFromController => res.send(resultFromController));
+});
+
 
 router.post("/login", (req, res) => {
     userController.login(req.body).then(resultFromController => res.send(resultFromController));

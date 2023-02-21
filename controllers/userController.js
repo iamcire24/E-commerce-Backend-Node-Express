@@ -42,7 +42,7 @@ module.exports.signUp = async (reqBody) => {
                     return false
                 } else {
                     //return console.log(`You have succesfully registered with the following information: ${user}`)
-                    return "You have successfully registered"
+                    return user
                 }
             })
 
@@ -54,14 +54,14 @@ module.exports.login = (reqBody) => {
     return User.findOne({email: reqBody.email}).then(result => {
         let message;
         if (result == null){
-            return message = "Email is not yet registered!"
+            return false
         } else {
             const isPasswordCorrect = bcrypt.compareSync(reqBody.password, result.password);
             if (isPasswordCorrect){
 
                 return {access: auth.createAccessToken(result)}
             } else {
-                return message = "Password is incorrect!"
+                return false
             }
         }
     })
@@ -100,6 +100,19 @@ module.exports.getAllUsers = async (data) => {
     let message = Promise.resolve("Only ADMIN can view all users.")
     return await message
 }
+module.exports.checkEmailExists = (reqBody) => {
+
+    return User.find({email:reqBody.email}).then( result => {
+
+        if(result.length > 0) {
+            return true
+
+        } else {
+            return false
+        }
+    })
+}
+
     
     
     
