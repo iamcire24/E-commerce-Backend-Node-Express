@@ -6,6 +6,10 @@ const productSchema = moongoose.Schema({
         required: [true, "Product Name is required!"],
         unique: true
     },
+    img: {
+        data: Buffer,
+        contentType: String
+    },
     code: {
         type: String,
         required: [true, "Product Code is required!"]
