@@ -5,7 +5,7 @@ const userRoute = require("./routes/userRoute")
 const productRoute = require("./routes/productRoute")
 const orderRoute = require("./routes/orderRoute")
 const cartRoute = require("./routes/cartRoute")
-const port = 8080;
+//const port = 8080;
 
 const app = express();
 
@@ -30,6 +30,6 @@ app.use("/products", productRoute);
 app.use("/order", orderRoute);
 app.use("/cart", cartRoute);
 
-app.listen(port, () => {
-    console.log(`Connected at port ${port}`);
-})
+// app.listen(port, () => {
+//     console.log(`Connected at port ${port}`);
+// })
