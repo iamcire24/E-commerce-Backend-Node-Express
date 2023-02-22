@@ -23,7 +23,15 @@ router.patch("/:userId/admin", auth.verify, (req, res)=> {
     const data = {
         isAdmin: auth.decode(req.headers.authorization).isAdmin
     }
-    userController.changeUserVerification(req.params, data).then(resultFromController => res.send(resultFromController))
+    userController.toAdmin(req.params, data).then(resultFromController => res.send(resultFromController))
+    
+    
+})
+router.patch("/:userId/user", auth.verify, (req, res)=> {
+    const data = {
+        isAdmin: auth.decode(req.headers.authorization).isAdmin
+    }
+    userController.toUser(req.params, data).then(resultFromController => res.send(resultFromController))
     
     
 })
@@ -35,12 +43,11 @@ router.get("/userDetails", auth.verify, (req, res) => {
     userController.getUserDetails(data).then(resultFromController => res.send(resultFromController));
 })
 
-router.get("/allUsers", auth.verify, (req, res) => {
-    const data = {
-        isAdmin: auth.decode(req.headers.authorization).isAdmin
-    }
-    userController.getAllUsers(data).then(resultFromController => res.send(resultFromController));
+router.get("/allUsers", (req, res) => {
+    userController.getAllUsers().then(resultFromController => res.send(resultFromController));
 })
+
+router.post('/addToCart', auth.verify, userController.addToCart);
 
 
 module.exports = router;
